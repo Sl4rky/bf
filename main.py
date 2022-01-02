@@ -76,14 +76,54 @@ class Pointer:
     """
 
     def __init__(self):
-        self.lst = LinkedList
+        self.lst = LinkedList()
+        for _ in range(2):
+            self.lst.add_tail()
+        self.ptr = self.lst.head
+
+    def move_left(self):
+        if not self.ptr.get_prev_node():
+            print("Error: Out of index")
+        self.ptr = self.ptr.get_prev_node()
+
+    def move_right(self):
+        if not self.ptr.get_next_node():
+            self.lst.add_tail()
+        self.ptr = self.ptr.get_next_node()
+
+    def add_to_node(self):
+        self.ptr.set_value(self.ptr.get_value() + 1)
+
+    def sub_from_node(self):
+        self.ptr.set_value(self.ptr.get_value() - 1)
+
+    def print_node(self):
+        print(chr(self.ptr.get_value()), end="")
+
+    def input_node(self):
+        self.ptr.set_value(int(input("Enter a number: ")))
 
 
 def main():
-    array = LinkedList()
-    array.add_tail()
-    print(array.length)
-    print(array.list_items())
+    prog = ",."
+    program = Pointer()
+
+    for char in prog:
+        if char == "+":
+            program.add_to_node()
+        if char == "-":
+            program.sub_from_node()
+        if char == "<":
+            program.move_left()
+        if char == ">":
+            program.move_right()
+        if char == ".":
+            program.print_node()
+        if char == ",":
+            program.input_node()
+
+    print()
+    print(program.lst.list_items())
 
 
 if __name__ == "__main__":
