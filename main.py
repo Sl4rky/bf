@@ -97,6 +97,9 @@ class Pointer:
     def sub_from_node(self):
         self.ptr.set_value(self.ptr.get_value() - 1)
 
+    def get_node_value(self):
+        return self.ptr.get_value()
+
     def print_node(self):
         print(chr(self.ptr.get_value()), end="")
 
@@ -105,25 +108,45 @@ class Pointer:
 
 
 def main():
-    prog = ",."
+    prog = """
+                >++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<+
+                +.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-
+                ]<+.
+           """
     program = Pointer()
+    jump_lst = []
+    i = 0
 
-    for char in prog:
+    while i <= len(prog) - 1:
+        char = prog[i]
         if char == "+":
             program.add_to_node()
-        if char == "-":
+        elif char == "-":
             program.sub_from_node()
-        if char == "<":
+        elif char == "<":
             program.move_left()
-        if char == ">":
+        elif char == ">":
             program.move_right()
-        if char == ".":
+        elif char == ".":
             program.print_node()
-        if char == ",":
+        elif char == ",":
             program.input_node()
-
+        elif char == "[":
+            jump_lst.append(i)
+        elif char == "]":
+            try:
+                new_index = jump_lst[-1]
+            except IndexError:
+                print("Mismatched brackets")
+                break
+            if program.get_node_value() != 0:
+                i = new_index
+            else:
+                jump_lst.pop()
+        i += 1
     print()
     print(program.lst.list_items())
+    print(jump_lst)
 
 
 if __name__ == "__main__":
